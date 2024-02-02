@@ -3,27 +3,41 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class ToMD5 {
+public class LibMD5 {
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
         try (Scanner lee = new Scanner(System.in)) {
             System.out.println("Introduce el texto para obtener hash MD5:");
             String texto = lee.nextLine();
-            ToMD5 md5 = new ToMD5(texto);
+            LibMD5 md5Primero = new LibMD5(texto);
 
             // SALIDA POR TERMINAL
             System.out.println("Texto origen del hash MD5: " + texto);
-            System.out.println("Numero de bytes: " + md5.getByteHash().length);
-            System.out.println("Hash en hexadecimal : " + md5.getStringHash());
-            System.out.println("Hash en bytes: " + Arrays.toString(md5.getByteHash()));
+            System.out.println("Numero de bytes: " + md5Primero.getByteHash().length);
+            System.out.println("Hash en hexadecimal : " + md5Primero.getStringHash());
+            System.out.println("Hash en bytes: " + Arrays.toString(md5Primero.getByteHash()));
+            System.out.println();
+
+            String textoSegundo = "hola mundo";
+            LibMD5 md5Segundo = new LibMD5(textoSegundo);
+
+            // SALIDA POR TERMINAL
+            System.out.println("Texto origen del hash MD5: " + textoSegundo);
+            System.out.println("Numero de bytes: " + md5Segundo.getByteHash().length);
+            System.out.println("Hash en hexadecimal : " + md5Segundo.getStringHash());
+            System.out.println("Hash en bytes: " + Arrays.toString(md5Segundo.getByteHash()));
+            System.out.println();
+
+            System.out.println("Iguales = "+md5Primero.comparaByteHash(md5Segundo.getByteHash()));
+
+
         }
     }
 
-    String texto;
-    byte byteHash[];
-    StringBuffer hexHash;
+    private byte byteHash[];
+    private StringBuffer hexHash;
 
-    public ToMD5(String texto) throws NoSuchAlgorithmException {
+    public LibMD5(String texto) throws NoSuchAlgorithmException {
 
         // CREA OBJETO MessageDigest
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -48,6 +62,14 @@ public class ToMD5 {
 
     public byte[] getByteHash() {
         return byteHash;
+    }
+
+    public boolean comparaByteHash(byte[] byteHash2){
+        if (MessageDigest.isEqual(this.getByteHash(), byteHash2)) {
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }
